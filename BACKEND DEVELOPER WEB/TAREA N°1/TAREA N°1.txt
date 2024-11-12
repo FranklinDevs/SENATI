@@ -1,0 +1,101 @@
+
+//1.- Realiza una calculadora de perimetro paralelogramo, rectangulo, cuadrado con datos dinamicos.
+<?php
+$tipo = readline("Elije una figura ('cuadrado' o 'rectangulo o paralelogramo'): ");
+
+if ($tipo == 'cuadrado') {
+    $lado = readline("Ingrese el valor del lado: ");
+    $perimetro = 4 * $lado;
+} elseif ($tipo == 'rectangulo') {
+    $lado1 = readline("Ingresa el valor del lado 1: ");
+    $lado2 = readline("Ingresa el valor del lado 2: ");
+    $perimetro = 2 * ($lado1 + $lado2);
+} elseif ($tipo == 'paralelogramo') {
+    $lado1 = readline("Ingresa el valor de la base: ");
+    $lado2 = readline("Ingresa el valor de la altura: ");
+    $perimetro = 2 * ($lado1 + $lado2);
+} else {
+    echo "no valido intente otra ves. Solo puede elegir entre 'cuadrado' o 'rectangulo'.\n";
+}
+
+echo "El perímetro del $tipo es: $perimetro\n";
+?>
+
+---------------------------------------------------------------------------------------------------
+
+<?php
+//2.- Realiza una calculadora de estaciones, escriba el mes y determine la estacion.
+
+echo "Introduce el número del mes del 1 al 12: ";
+$mes = trim(fgets(STDIN));
+if ($mes < 1 || $mes > 12) {
+
+  echo "Mes inválido. Debes ingresar un número entre 1 y 12.\n";
+}
+switch ($mes) {
+
+  case 12: 
+  case 1: 
+  case 2:
+    echo "Es invierno.\n";
+    break;
+
+  case 3: 
+  case 4: 
+  case 5:
+    echo "Es primavera.\n";
+    break;
+
+  case 6: 
+  case 7: 
+  case 8:
+    echo "Es verano.\n";
+    break;
+
+  case 9: 
+  case 10: 
+  case 11:
+    echo "Es otoño.\n";
+
+    break;
+
+
+  default:
+  echo "Mes no válido.\n";
+    break;
+
+}
+
+?>
+
+----------------------
+
+// 3.- Realiza una calculadora de areas circulo, rectangulo, cono con datos dinamicos.
+<?php
+$tipo = readline("Escoja la figura ('circulo', 'rectangulo' o 'cono'): ");
+
+if ($tipo == 'circulo') {
+    $pi = 3.14;
+    $radio = readline("Ingrese el valor del radio: ");
+    $area = $pi * ($radio * $radio);
+    echo "El área del círculo es: $area\n";
+} elseif ($tipo == 'rectangulo') {
+    $base = readline("Ingrese el valor de la base: ");
+    $altura = readline("Ingrese el valor de la altura: ");
+    $area = $base * $altura;
+    echo "El área del rectángulo es: $area\n";
+} elseif ($tipo == 'cono') {
+    $Alateral = readline("Ingrese el valor del área lateral: ");
+    $Abase = readline("Ingrese el valor del área base: ");
+    $Atotal = $Abase + $Alateral;
+    echo "El área del cono es: $Atotal\n";
+} else {
+    echo "Tipo de figura no válido. Solo puede elegir entre 'circulo', 'rectangulo' o 'cono'.\n";
+}
+?>
+
+
+
+
+
+
