@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TAREA N°4</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />  
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script> 
+    <style>
+        body {
+            background-image: url('image.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        .container {
+            margin-top: 20px;
+            background-color: rgba(177, 161, 161, 0.8);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h3 {
+            text-align: center;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" style="width:600px;">
+        <h3 align="center">Selecciona el Formulario</h3>
+        <div class="text-center">
+            <!-- Botones -->
+            <button class="btn btn-info" id="btnAlumno">Formulario Alumno</button>
+            <button class="btn btn-info" id="btnDocente">Formulario Docente</button>
+        </div>
+
+        <!-- Formulario -->
+        <div id="formulario" class="hidden">
+            <h3 id="tituloFormulario">Formulario</h3>
+            <label>Nombre</label>
+            <input type="text" class="form-control" placeholder="Nombre">
+            <br>
+            <label>Apellidos</label>
+            <input type="text" class="form-control" placeholder="Apellidos">
+            <br>
+            <label id="labelEspecifico">Código</label>
+            <input type="text" class="form-control" placeholder="Código">
+            <br>
+            <input type="submit" class="btn btn-info" value="Enviar">
+        </div>
+    </div>
+
+    <div class="container" style="width:600px;">
+        <h3 align="center">Formulario para Usuarios JASS</h3>
+        <div ng-app="form_jass" ng-controller="userController" ng-init="displayData()">
+            <label>Nombre</label>
+            <input type="text" name="txtnombre" ng-model="txtnombre" class="form-control" placeholder="nombre" />
+            <br />
+            <label>Apellidos</label>
+            <input type="text" name="txtapellidos" ng-model="txtapellidos" class="form-control" placeholder="apellidos" />
+            <br />
+            <label>DNI</label>
+            <input type="text" name="txtdni" ng-model="txtdni" class="form-control" placeholder="dni" />
+            <br />
+            <label>Codigo UVS</label>
+            <input type="text" name="txtcodigo_jass" ng-model="txtcodigo_jass" class="form-control" placeholder="codigo UVS" />
+            <br />
+            <label>JASS</label>
+            <select class="form-control" name="txtnombre_jass" ng-model="txtnombre_jass">
+                <option>licas</option>
+                <option>achoj</option>
+                <option>achaya</option>
+                <option>collana</option>
+            </select>
+            <br />
+
+            <input type="hidden" name="txtid" ng-model="id" />
+            <input type="submit" name="btnInsert" class="btn btn-info" ng-click="insertData()" value="{{btnName}}" />
+            <br /><br /><br />
+
+            <table class="table table-condensed">
+                <tr>
+                    <h3 align="center">REPORTE de USUARIOS</h3>
+                    <th>Nombre</th>
+                    <th>Apellidos</th>
+                    <th>DNI</th>
+                    <th>Codigo UVS</th>
+                    <th>JASS</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                <tr ng-repeat="x in names">
+                    <td class="info">{{x.nombre}}</td>
+                    <td>{{x.apellidos}}</td>
+                    <td class="info">{{x.dni}}</td>
+                    <td>{{x.codigo_jass}}</td>
+                    <td class="info">{{x.nombre_jass}}</td>
+                    <td><button ng-click="actualizarData(x.codigo,x.nombre,x.apellidos,x.dni,x.codigo_jass,x.nombre_jass)" class="btn btn-info btn-xs">Editar</button></td>
+                    <td><button ng-click="eliminarData(x.codigo)" class="btn btn-danger btn-xs">Eliminar</button></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // Mostrar y cambiar contenido del formulario dinámico
+        document.getElementById("btnAlumno").addEventListener("click", function () {
+            document.getElementById("formulario").classList.remove("hidden");
+            document.getElementById("tituloFormulario").innerText = "Formulario para Alumno";
+            document.getElementById("labelEspecifico").innerText = "Código Alumno";
+        });
+
+        document.getElementById("btnDocente").addEventListener("click", function () {
+            document.getElementById("formulario").classList.remove("hidden");
+            document.getElementById("tituloFormulario").innerText = "Formulario para Docente";
+            document.getElementById("labelEspecifico").innerText = "DNI Docente";
+        });
+
+        // AngularJS controlador
+        var app = angular.module("form_jass", []);
+        app.controller("userController", function ($scope, $http) {
+            $scope.btnName = "Agregar";
+            $scope.id = 0;
+            $scope.insertData = function () {
+                if (!$scope.txtnombre || !$scope.txtdni) {
+                    alert("Por favor, complete los campos obligatorios.");
+                } else {
+                    $http.post("inserta_actualiza.php", {
+                        txtnombre: $scope.txtnombre,
+                        txtapellidos: $scope.txtapellidos,
+                        txtdni: $scope.txtdni,
+                        txtcodigo_jass: $scope.txtcodigo_jass,
+                        txtnombre_jass: $scope.txtnombre_jass,
+                        txtid: $scope.id,
+                        btnName: $scope.btnName,
+                    }).success(function (data) {
+                        alert(data);
+                        $scope.txtnombre = null;
+                        $scope.txtapellidos = null;
+                        $scope.txtdni = null;
+                        $scope.txtcodigo_jass = null;
+                        $scope.txtnombre_jass = null;
+                        $scope.id = null;
+                        $scope.btnName = "Agregar";
+                        $scope.displayData();
+                    });
+                }
+            };
+            $scope.displayData = function () {
+                $http.get("lista.php").success(function (data) {
+                    $scope.names = data;
+                });
+            };
+            $scope.eliminarData = function (id) {
+                if (confirm("¿Seguro que quieres eliminar estos datos?")) {
+                    $http.post("eliminar.php", { id: id }).success(function (data) {
+                        alert(data);
+                        $scope.displayData();
+                    });
+                }
+            };
+            $scope.actualizarData = function (id, nombre, apellidos, dni, codigo_jass, nombre_jass) {
+                $scope.id = id;
+                $scope.txtnombre = nombre;
+                $scope.txtapellidos = apellidos;
+                $scope.txtdni = dni;
+                $scope.txtcodigo_jass = codigo_jass;
+                $scope.txtnombre_jass = nombre_jass;
+                $scope.btnName = "Actualizar";
+            };
+        });
+    </script>
+</body>
+</html>
